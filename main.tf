@@ -43,27 +43,6 @@ data "aws_iam_policy_document" "read" {
   }
 }
 
-data "aws_iam_policy_document" "default" {
-  statement {
-    sid    = "ecr"
-    effect = "Allow"
-
-    actions = [
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:BatchGetImage",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeImages",
-      "ecr:DescribeRepositories",
-      "ecr:GetAuthorizationToken",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:InitiateLayerUpload",
-      "ecr:ListImages",
-      "ecr:PutImage",
-      "ecr:UploadLayerPart",
-    ]
-  }
-}
-
 module "label" {
   source = "git::https://github.com/MITLibraries/tf-mod-name?ref=master"
   name   = "${var.name}"
@@ -90,12 +69,6 @@ resource "aws_iam_policy" "write" {
   name        = "${module.label.name}-write"
   description = "Allow IAM Users to push into ECR"
   policy      = "${data.aws_iam_policy_document.write.json}"
-}
-
-resource "aws_iam_policy" "default" {
-  name        = "${module.label.name}-default"
-  description = "Allow IAM Users to push/pull from ECR"
-  policy      = "${data.aws_iam_policy_document.default.json}"
 }
 
 resource "aws_ecr_lifecycle_policy" "default" {

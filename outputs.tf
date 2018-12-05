@@ -42,13 +42,3 @@ output "policy_write_arn" {
   value       = "${aws_iam_policy.write.arn}"
   description = "The IAM Policy ARN to be given access to push images to ECR"
 }
-
-output "policy_default_name" {
-  value       = "${aws_iam_policy.default.name}"
-  description = "The IAM Policy name to be given access to push/pull images from ECR"
-}
-
-output "policy_default_arn" {
-  value       = "${aws_iam_policy.default.arn}"
-  description = "The IAM Policy ARN to be given acces to push/pull images from ECR"
-}
