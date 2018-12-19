@@ -80,7 +80,7 @@ resource "aws_ecr_lifecycle_policy" "default" {
     "rulePriority": 1,
     "description": "Rotate images when reach ${var.max_image_count} images stored",
     "selection": {
-      "tagStatus": "tagged",
+      "tagStatus": "any",
       "tagPrefixList": ["${terraform.workspace}"],
       "countType": "imageCountMoreThan",
       "countNumber": ${var.max_image_count}
