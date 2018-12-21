@@ -51,6 +51,7 @@ module "label" {
 
 resource "aws_ecr_repository" "default" {
   name = "${module.label.name}"
+  tags = "${module.label.tags}"
 }
 
 resource "aws_iam_policy" "login" {
