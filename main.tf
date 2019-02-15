@@ -103,7 +103,7 @@ resource "aws_iam_policy" "write" {
 }
 
 resource "aws_iam_policy" "readwrite" {
-  name        = "${module.label.name-readwrite}"
+  name        = "${module.label.name}-readwrite"
   description = "Allow IAM users to read/write into ECR"
   policy      = "${data.aws_iam_policy_document.rw.json}"
 }
