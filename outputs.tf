@@ -42,3 +42,13 @@ output "policy_write_arn" {
   value       = "${aws_iam_policy.write.arn}"
   description = "The IAM Policy ARN to be given access to push images to ECR"
 }
+
+output "policy_readwrite_name" {
+  value       = "${aws_iam_policy.readwrite.name}"
+  description = "The IAM policy name to be given read/write access to ECR"
+}
+
+output "policy_readwrite_arn" {
+  value       = "${aws_iam_policy.readwrite.arn}"
+  description = "The IAM policy ARN to be given read/write access to ECR"
+}
