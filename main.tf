@@ -1,3 +1,8 @@
+/**
+ * # Terraform ECR module
+ *
+ * This module is used to create an [`AWS ECR Docker Container registry`](https://aws.amazon.com/ecr/). It is originally from [here](https://github.com/cloudposse/terraform-aws-ecr), and has been modified to fit our needs.
+ **/
 data "aws_iam_policy_document" "login" {
   statement {
     sid     = "ECRGetAuthorizationToken"
@@ -43,6 +48,31 @@ data "aws_iam_policy_document" "read" {
   }
 }
 
+data "aws_iam_policy_document" "rw" {
+  statement {
+    actions = [
+      "ecr:CreateRepository",
+      "ecr:GetAuthorizationToken",
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "ecr:DeleteRepository",
+      "ecr:DescribeImages",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:ListTagsForResource",
+      "ecr:TagResource",
+      "ecr:UntagResource",
+    ]
+
+    resources = ["${aws_ecr_repository.default.arn}"]
+  }
+}
+
 module "label" {
   source = "git::https://github.com/MITLibraries/tf-mod-name?ref=master"
   name   = "${var.name}"
@@ -70,6 +100,12 @@ resource "aws_iam_policy" "write" {
   name        = "${module.label.name}-write"
   description = "Allow IAM Users to push into ECR"
   policy      = "${data.aws_iam_policy_document.write.json}"
+}
+
+resource "aws_iam_policy" "readwrite" {
+  name        = "${module.label.name-readwrite}"
+  description = "Allow IAM users to read/write into ECR"
+  policy      = "${data.aws_iam_policy_document.rw.json}"
 }
 
 resource "aws_ecr_lifecycle_policy" "default" {
