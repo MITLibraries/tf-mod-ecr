@@ -60,13 +60,18 @@ data "aws_iam_policy_document" "rw" {
 
   statement {
     actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:CompleteLayerUpload",
       "ecr:DeleteRepository",
       "ecr:DescribeImages",
       "ecr:DescribeRepositories",
+      "ecr:InitiateLayerUpload",
       "ecr:ListImages",
       "ecr:ListTagsForResource",
+      "ecr:PutImage",
       "ecr:TagResource",
       "ecr:UntagResource",
+      "ecr:UploadLayerPart",
     ]
 
     resources = ["${aws_ecr_repository.default.arn}"]
