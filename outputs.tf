@@ -13,6 +13,11 @@ output "repository_name" {
   description = "Registry name"
 }
 
+output "repository_arn" {
+  value       = "${aws_ecr_repository.default.arn}"
+  description = "Repository ARN"
+}
+
 output "policy_login_name" {
   value       = "${aws_iam_policy.login.name}"
   description = "The IAM Policy name to be given access to login in ECR"
