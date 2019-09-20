@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "rw" {
 }
 
 module "label" {
-  source = "git::https://github.com/MITLibraries/tf-mod-name?ref=master"
+  source = "github.com/mitlibraries/tf-mod-name?ref=0.11"
   name   = "${var.name}"
   tags   = "${var.tags}"
 }
