@@ -3,13 +3,14 @@ variable "name" {
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   default     = {}
   description = "Additional tags (e.g. `map('BusinessUnit','XYZ')`)"
 }
 
 variable "max_image_count" {
-  type        = "string"
+  type        = string
   description = "How many Docker Image versions AWS ECR will store"
   default     = "5"
 }
+
