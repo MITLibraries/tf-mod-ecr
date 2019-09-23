@@ -3,6 +3,11 @@
  *
  * This module is used to create an [`AWS ECR Docker Container registry`](https://aws.amazon.com/ecr/). It is originally from [here](https://github.com/cloudposse/terraform-aws-ecr), and has been modified to fit our needs.
  **/
+provider "aws" {
+  version = "~> 2.0"
+  region  = "us-east-1"
+}
+
 data "aws_iam_policy_document" "login" {
   statement {
     sid     = "ECRGetAuthorizationToken"
@@ -25,7 +30,7 @@ data "aws_iam_policy_document" "write" {
       "ecr:PutImage",
     ]
 
-    resources = ["${aws_ecr_repository.default.arn}"]
+    resources = [aws_ecr_repository.default.arn]
   }
 }
 
@@ -44,7 +49,7 @@ data "aws_iam_policy_document" "read" {
       "ecr:ListImages",
     ]
 
-    resources = ["${aws_ecr_repository.default.arn}"]
+    resources = [aws_ecr_repository.default.arn]
   }
 }
 
@@ -74,47 +79,47 @@ data "aws_iam_policy_document" "rw" {
       "ecr:UploadLayerPart",
     ]
 
-    resources = ["${aws_ecr_repository.default.arn}"]
+    resources = [aws_ecr_repository.default.arn]
   }
 }
 
 module "label" {
-  source = "github.com/mitlibraries/tf-mod-name?ref=0.11"
-  name   = "${var.name}"
-  tags   = "${var.tags}"
+  source = "github.com/mitlibraries/tf-mod-name?ref=0.12"
+  name   = var.name
+  tags   = var.tags
 }
 
 resource "aws_ecr_repository" "default" {
-  name = "${module.label.name}"
-  tags = "${module.label.tags}"
+  name = module.label.name
+  tags = module.label.tags
 }
 
 resource "aws_iam_policy" "login" {
   name        = "${module.label.name}-login"
   description = "Allow IAM Users to call ecr:GetAuthorizationToken"
-  policy      = "${data.aws_iam_policy_document.login.json}"
+  policy      = data.aws_iam_policy_document.login.json
 }
 
 resource "aws_iam_policy" "read" {
   name        = "${module.label.name}-read"
   description = "Allow IAM Users to pull from ECR"
-  policy      = "${data.aws_iam_policy_document.read.json}"
+  policy      = data.aws_iam_policy_document.read.json
 }
 
 resource "aws_iam_policy" "write" {
   name        = "${module.label.name}-write"
   description = "Allow IAM Users to push into ECR"
-  policy      = "${data.aws_iam_policy_document.write.json}"
+  policy      = data.aws_iam_policy_document.write.json
 }
 
 resource "aws_iam_policy" "readwrite" {
   name        = "${module.label.name}-readwrite"
   description = "Allow IAM users to read/write into ECR"
-  policy      = "${data.aws_iam_policy_document.rw.json}"
+  policy      = data.aws_iam_policy_document.rw.json
 }
 
 resource "aws_ecr_lifecycle_policy" "default" {
-  repository = "${aws_ecr_repository.default.name}"
+  repository = aws_ecr_repository.default.name
 
   policy = <<EOF
 {
@@ -132,4 +137,6 @@ resource "aws_ecr_lifecycle_policy" "default" {
   }]
 }
 EOF
+
 }
+
