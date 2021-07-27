@@ -1,8 +1,11 @@
-/**
- * # Terraform ECR module
- *
- * This module is used to create an [`AWS ECR Docker Container registry`](https://aws.amazon.com/ecr/). It is originally from [here](https://github.com/cloudposse/terraform-aws-ecr), and has been modified to fit our needs.
- **/
+##
+# Terraform ECR module
+#
+# This module is used to create an [`AWS ECR Docker Container registry`](https://aws.amazon.com/ecr/). 
+# It is originally from [here](https://github.com/cloudposse/terraform-aws-ecr), and has been modified to 
+# fit our needs.
+##
+
 provider "aws" {
   version = "~> 2.0"
   region  = "us-east-1"
@@ -84,7 +87,7 @@ data "aws_iam_policy_document" "rw" {
 }
 
 module "label" {
-  source = "github.com/mitlibraries/tf-mod-name?ref=0.12"
+  source = "github.com/mitlibraries/tf-mod-name?ref=0.13"
   name   = var.name
   tags   = var.tags
 }
